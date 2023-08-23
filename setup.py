@@ -4,10 +4,10 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="ezconfig_client",
+    name="ezconfig-client",
     version="0.1",
     author="RiichTT",
-    author_email="",
+    author_email="tolibo@hotmail.com",
     description="ezconfig client",
     long_description=long_description,
     long_description_content_type="text/markdown",

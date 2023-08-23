@@ -1,2 +1,5 @@
 local.md
 .idea
+dist
+build
+ezconfig_client.egg-info

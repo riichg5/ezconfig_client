@@ -11,7 +11,7 @@ setuptools.setup(
     description="ezconfig client",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/pythonml/douyin_image",
+    url="https://github.com/riichg5/ezconfig_client",
     packages=setuptools.find_packages(),
     install_requires=['requests>=2.31.0'],
     entry_points={

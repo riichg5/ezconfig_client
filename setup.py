@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/riichg5/ezconfig_client",
     packages=setuptools.find_packages(),
-    install_requires=['requests>=2.31.0'],
+    install_requires=['requests>=2.22.0'],
     entry_points={
         'console_scripts': [
             'ezconfig_client=ezconfig_client:main'

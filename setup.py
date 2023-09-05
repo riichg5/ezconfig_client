@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ezconfig-client",
-    version="0.3",
+    version="0.4",
     author="RiichTT",
     author_email="tolibo@hotmail.com",
     description="ezconfig client",

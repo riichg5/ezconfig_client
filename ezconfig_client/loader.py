@@ -38,7 +38,7 @@ def get_latest_config() -> {"version": int, "config_data": dict, "config_hash": 
     从ezconfig获取配置
     :return: {"version": int, "config_data": dict, "config_hash": str}
     """
-    print(auth_token)
+    # print(auth_token)
     # 获取最新配置
     response = requests.get(_config_url, headers={'authorization': auth_token})
     if response.status_code != 200:

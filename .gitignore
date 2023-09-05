@@ -3,3 +3,4 @@ local.md
 dist
 build
 ezconfig_client.egg-info
+__pycache__

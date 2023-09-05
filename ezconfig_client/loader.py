@@ -1,5 +1,3 @@
-
-
 # 获取几个环境变量
 # EZCONFIG_ENV
 # EZCONFIG_APPID
@@ -7,6 +5,8 @@
 
 import os
 import requests
+import base64
+import codecs
 import sys
 import json
 
@@ -25,8 +25,11 @@ _config_version_path = "/api/version/{APPID}/{ENV}"
 _config_url = _EZCONFIG_HOST + _config_path.format(APPID=_EZCONFIG_APPID, ENV=_EZCONFIG_ENV)
 # 获取配置最新版本号的URL
 config_version_url = _EZCONFIG_HOST + _config_version_path.format(APPID=_EZCONFIG_APPID, ENV=_EZCONFIG_ENV)
-# Authorization header 值
-auth_token = "Bearer {}:{}".format(_EZCONFIG_APPID, _EZCONFIG_SECRET)
+# Authorization header 值，注意值为base64编码
+print("{0}:{1}".format(_EZCONFIG_APPID, _EZCONFIG_SECRET))
+auth_token = "{0}:{1}".format(_EZCONFIG_APPID, _EZCONFIG_SECRET).encode('utf-8')
+# 将auth_token转换为base64编码
+auth_token = "Basic %s" % base64.b64encode(auth_token).decode('utf-8')
 
 
 # 从ezconfig获取配置
@@ -35,8 +38,9 @@ def get_latest_config() -> {"version": int, "config_data": dict, "config_hash": 
     从ezconfig获取配置
     :return: {"version": int, "config_data": dict, "config_hash": str}
     """
+    print(auth_token)
     # 获取最新配置
-    response = requests.get(_config_url, headers={'Authorization': auth_token})
+    response = requests.get(_config_url, headers={'authorization': auth_token})
     if response.status_code != 200:
         print("获取最新配置失败，错误码：{}".format(response.status_code))
         exception = Exception("获取最新配置失败，http请求status code错误码：{}".format(response.status_code))

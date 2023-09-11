@@ -6,9 +6,7 @@
 import os
 import requests
 import base64
-import codecs
-import sys
-import json
+from retrying import retry
 
 # 获取环境变量
 _EZCONFIG_ENV = os.getenv('EZCONFIG_ENV', 'DEV')
@@ -32,22 +30,36 @@ auth_token = "{0}:{1}".format(_EZCONFIG_APPID, _EZCONFIG_SECRET).encode('utf-8')
 auth_token = "Basic %s" % base64.b64encode(auth_token).decode('utf-8')
 
 
+@retry(stop_max_attempt_number=3, wait_fixed=2000)
+def __parse_request():
+    response = requests.get(_config_url, headers={'authorization': auth_token}, timeout=30)
+    assert response.status_code == 200, "获取最新配置失败，错误码：{}".format(response.status_code)
+    response_data = response.json()
+    assert response_data['errno'] == 0, "获取最新配置失败，错误码：{}, 错误信息：".format(response_data['errno'], response_data['errmsg'])
+    return response.json()["data"]
+
+
 # 从ezconfig获取配置
 def get_latest_config() -> {"version": int, "config_data": dict, "config_hash": str}:
     """
     从ezconfig获取配置
     :return: {"version": int, "config_data": dict, "config_hash": str}
     """
-    # print(auth_token)
     # 获取最新配置
-    response = requests.get(_config_url, headers={'authorization': auth_token})
-    if response.status_code != 200:
-        print("获取最新配置失败，错误码：{}".format(response.status_code))
-        exception = Exception("获取最新配置失败，http请求status code错误码：{}".format(response.status_code))
-        raise exception
-    response_data = response.json()
-    if response_data['errno'] != 0:
-        exception = Exception("获取最新配置失败，错误码：{}, 错误信息：".format(response_data['errno'], response_data['errmsg']))
-        raise exception
-    return response.json()["data"]
+    # response = requests.get(_config_url, headers={'authorization': auth_token}, timeout=30)
+    # if response.status_code != 200:
+    #     print("获取最新配置失败，错误码：{}".format(response.status_code))
+    #     exception = Exception("获取最新配置失败，http请求status code错误码：{0}".format(response.status_code))
+    #     raise exception
+    # response_data = response.json()
+    # if response_data['errno'] != 0:
+    #     exception = Exception("获取最新配置失败，错误码：{0}, 错误信息：{1}".format(response_data['errno'], response_data['errmsg']))
+    #     raise exception
+    # return response.json()["data"]
+    try:
+        return __parse_request()
+    except Exception as e:
+        print(e)
+        raise e
+
 

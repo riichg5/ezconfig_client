@@ -6,6 +6,16 @@
 pip install ezconfig-client
 ```
 
+传入自定义参数，获取最新配置
+
+```python
+from ezconfig_client import loader
+res = loader.get_latest_config_by_params("DEV", "app_id", "secret", "https://xxxx.xxx.xxx")
+print(res)
+```
+
+从环境变量中获取参数，从而获取配置的方法
+
 ```python
 from ezconfig_client import loader
 res = loader.get_latest_config()
@@ -35,8 +45,9 @@ EZCONFIG_ENV=DEV EZCONFIG_APPID=xxx.xx.xxx EZCONFIG_SECRET=xxxxxxx EZCONFIG_HOST
 
 ## 版本说明
 
-| 版本  | 变更                        |
-|-----|---------------------------|
-| 0.4 | 降低requests版本，修改bug        |
-| 0.5 | 增加访问错误重试机制，请求超时30秒，失败重试3次 |
+| 版本  | 变更                                                        |
+|-----|-----------------------------------------------------------|
+| 0.4 | 降低requests版本，修改bug                                        |
+| 0.5 | 增加访问错误重试机制，请求超时30秒，失败重试3次                                 |
+| 0.6 | 新增get_latest_config_by_params方法，传自定义参数获取最新配置，而不是走环境变量获取参数 |
 
